@@ -19,7 +19,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': { view: 'pages/homepage' },
+  'GET /websocket': 'BarWebSocketController.hello',
+  'POST /connect': { controller: 'BarWebSocketController', action:'onConnect' },
 
 
   /***************************************************************************

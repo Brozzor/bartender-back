@@ -27,8 +27,19 @@ module.exports.sockets = {
   *                                                                          *
   ***************************************************************************/
 
-  // transports: [ 'websocket' ],
+  transports: [ 'websocket' ],
 
+  onConnect: function(session, socket) {
+
+    // By default, do nothing.
+    console.log('onConnect')
+  },
+
+  // This custom onDisconnect function will be run each time a socket disconnects
+  onDisconnect: function(session, socket) {
+
+    // By default: do nothing.
+  },
 
   /***************************************************************************
   *                                                                          *
@@ -43,14 +54,15 @@ module.exports.sockets = {
   ***************************************************************************/
 
   // beforeConnect: function(handshake, proceed) {
-  //
+  //   console.log('beforeConnect')
   //   // `true` allows the socket to connect.
   //   // (`false` would reject the connection)
   //   return proceed(undefined, true);
-  //
+  
   // },
-
-
+  adapter: 'memory',
+  authorization: false,
+  resource: '/socket.io'
   /***************************************************************************
   *                                                                          *
   * `afterDisconnect`                                                        *
