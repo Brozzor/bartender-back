@@ -29,18 +29,6 @@ module.exports.sockets = {
 
   transports: [ 'websocket' ],
 
-  onConnect: function(session, socket) {
-
-    // By default, do nothing.
-    console.log('onConnect')
-  },
-
-  // This custom onDisconnect function will be run each time a socket disconnects
-  onDisconnect: function(session, socket) {
-
-    // By default: do nothing.
-  },
-
   /***************************************************************************
   *                                                                          *
   * `beforeConnect`                                                          *
@@ -60,9 +48,6 @@ module.exports.sockets = {
   //   return proceed(undefined, true);
   
   // },
-  adapter: 'memory',
-  authorization: false,
-  resource: '/socket.io'
   /***************************************************************************
   *                                                                          *
   * `afterDisconnect`                                                        *

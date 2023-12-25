@@ -19,9 +19,21 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'GET /websocket': 'BarWebSocketController.hello',
-  'POST /connect': { controller: 'BarWebSocketController', action:'onConnect' },
+  'POST /api/v1/auth/login' : 'AuthController.login',
 
+  'POST /api/v1/user' : 'UserController.create',
+  'GET /api/v1/user/me' : 'UserController.me',
+  'PUT /api/v1/user/me' : 'UserController.updateMe',
+  'PUT /api/v1/user/password' : 'UserController.updatePassword',
+  'POST /api/v1/user/forgetPassword' : 'UserController.forgetPassword',
+  'PUT /api/v1/user/resetPassword' : 'UserController.resetPassword',
+
+  'POST /api/v1/a/file' : 'FileController.upload',
+  'GET /api/v1/file/:slug' : 'FileController.download',
+  'GET /api/v1/file/id/:id' : 'FileController.download',
+  'GET /api/v1/a/file' : 'FileController.listAdmin',
+  'DELETE /api/v1/a/file/:id' : 'FileController.delete',
+  'GET /api/v1/a/file/:id' : 'FileController.get',
 
   /***************************************************************************
   *                                                                          *
