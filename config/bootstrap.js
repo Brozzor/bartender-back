@@ -9,37 +9,19 @@
  * https://sailsjs.com/config/bootstrap
  */
 
-const WebSocket = require('ws');
+
 require('dotenv').config();
 
 module.exports.bootstrap = async function() {
-  const sailsServer = sails.hooks.http.server;
 
-  const wss = new WebSocket.Server({ noServer: true });
+  // Init WebSocket server
+  WebSocketService.init();
 
-  const connectedSockets = [];
+  if (await Bar.count() > 0) {
+    return;
+  }
 
-  wss.on('connection', (ws) => {
-
-    connectedSockets.push(ws);
-
-    ws.on('message', (message) => {
-      console.log(`Reçu: ${message}`);
-    });
-
-    ws.send('Bienvenue sur le serveur WebSocket de Sails.js!');
-  });
-
-  sailsServer.on('upgrade', (request, socket, head) => {
-    wss.handleUpgrade(request, socket, head, (ws) => {
-      wss.emit('connection', ws, request);
-    });
-  });
-
-  sails.config.sockets = {
-    connectedSockets: connectedSockets,
-  };
-
+  await Bar.create({});
 
   // By convention, this is a good place to set up fake data during development.
   //

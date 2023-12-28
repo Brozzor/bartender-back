@@ -10,12 +10,11 @@ module.exports = {
     attributes: {
       name: {type: 'string', defaultsTo: 'BarTender'},
       token: {type: 'string'},
-      isOnline: {type: 'boolean', defaultsTo: false},
+      status : {type: 'string', isIn: ['OFFLINE', 'ONLINE', 'USED', 'NO_GLASS' ], defaultsTo: 'OFFLINE'},
 
     },
 
     beforeCreate: function (values, next) {
-      // Hash password
       values.token = randomstring.generate(20);
       values.name = values.name.toLowerCase();
       next();

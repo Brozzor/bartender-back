@@ -14,5 +14,8 @@ module.exports = {
         }
         if (user.status === 'DISABLED') return res.sendStatus(401)
         return res.json(token)
+    },
+    loginCustomer: async (req, res) => {
+        
     }
 };

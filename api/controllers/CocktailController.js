@@ -11,8 +11,9 @@ module.exports = {
         return res.sendStatus(200);
     },
     order : async function(req, res) {
-        console.log(sails.config.sockets.connectedSockets)
+        //console.log(sails.config.sockets.connectedSockets)
         sails.config.sockets.connectedSockets.forEach((ws) => {
+            console.log(ws.bar)
             if (ws.readyState === WebSocket.OPEN) {
               ws.send(JSON.stringify({ message: 'Nouveau cocktail créé!' }));
             }
