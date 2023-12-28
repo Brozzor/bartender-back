@@ -68,7 +68,7 @@
     "no-mixed-spaces-and-tabs":     [2, "smart-tabs"],
     "no-redeclare":                 ["warn"],
     "no-return-assign":             ["off"],
-    "no-sequences":                 ["error"],
+    "no-sequences":                 ["off"],
     "no-trailing-spaces":           ["off"],
     "no-undef":                     ["off"],
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

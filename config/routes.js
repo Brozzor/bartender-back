@@ -35,6 +35,7 @@ module.exports.routes = {
   'DELETE /api/v1/a/file/:id' : 'FileController.delete',
   'GET /api/v1/a/file/:id' : 'FileController.get',
 
+  'POST /api/v1/cocktail/order' : 'CocktailController.order',
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
