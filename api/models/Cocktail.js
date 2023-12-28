@@ -12,7 +12,6 @@ module.exports = {
       consumable: { type: 'json', columnType: 'array' },
       img: { type: 'string'},
       isInStock: {type: 'boolean'},
-      bar: {model: 'bar'},
       //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
       //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
       //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝

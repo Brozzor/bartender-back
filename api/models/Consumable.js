@@ -11,7 +11,6 @@ module.exports = {
   
       name: {type: 'string'},
       isAlcool: {type: 'boolean'},
-      bar: {model: 'bar'},
       //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
       //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
       //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝

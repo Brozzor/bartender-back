@@ -18,7 +18,7 @@ module.exports = {
 
     comparePassword: function (password, userPassword) {
       let hash = crypto.createHash('sha256').update(password).digest('base64');
-      if (hash == userPassword) return true
+      if (hash === userPassword) return true
       return false
     },
   

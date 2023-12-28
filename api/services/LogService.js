@@ -4,7 +4,7 @@ module.exports = {
     },
 
     get : async function(){
-        return await Log.find({}).limit(20).sort('createdAt DESC'); // by bar id
+        return await Log.find({}).limit(20).sort('createdAt DESC');
     }
 
 }

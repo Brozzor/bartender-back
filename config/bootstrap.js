@@ -17,6 +17,13 @@ module.exports.bootstrap = async function() {
   // Init WebSocket server
   WebSocketService.init();
 
+  sails.config.tenant = {
+    get: function() {
+      let user = getNamespace('request-session').get('user');
+      return user ? user._tenant : null;
+    }
+  }
+
   if (await Bar.count() > 0) {
     return;
   }
