@@ -9,8 +9,10 @@ module.exports = {
             let bar;
             try {
                 bar = await authBar(req.headers.authorization)
-                closeAllSameBarSocket(bar.id);
+                await closeAllSameBarSocket(bar.id);
+                await Bar.updateOne({id: bar.id}, {status: 'ONLINE'})
             } catch (error) {
+                console.log(error)
                 return ws.close()
             }
             
@@ -20,8 +22,29 @@ module.exports = {
             ws.on('message', (message) => {
                 console.log(`Reçu: ${message}`);
             });
+
+            
+            ws.on("close", async () => {
+                console.log('close')
+            });
+
+            ws.on("error", async (err) => {
+                console.log('error');
+                console.log(err);
+                
+            });
+
+            ws.on("pong", async (err) => {
+                console.log('pong');
+                console.log(err);
+                
+            });
+
+
+        });
         
-            ws.send('Bienvenue sur le serveur WebSocket de Sails.js!');
+        wss.on("error", (err) => {
+            console.log(err);
         });
       
         sails.hooks.http.server.on('upgrade', (request, socket, head) => {
@@ -29,6 +52,7 @@ module.exports = {
             wss.emit('connection', ws, request);
           });
         });
+
       
         sails.config.sockets = {
           connectedSockets: connectedSockets,
@@ -44,9 +68,11 @@ async function authBar(authorization) {
 }
 
 async function closeAllSameBarSocket(barId) {
-    sails.config.sockets.connectedSockets.forEach((ws) => {
+    for (const ws of sails.config.sockets.connectedSockets) {
         if (ws.readyState === WebSocket.OPEN && ws.bar === barId) {
-            ws.close()
+            sails.config.sockets.connectedSockets.splice(sails.config.sockets.connectedSockets.indexOf(ws), 1);
+            await ws.close()
+            await Bar.updateOne({id: barId}, {status: 'OFFLINE'})
         }
-    });
+    }
 }

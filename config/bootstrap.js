@@ -11,11 +11,8 @@
 
 
 require('dotenv').config();
-
+const {getNamespace , createNamespace} = require("cls-hooked");
 module.exports.bootstrap = async function() {
-
-  // Init WebSocket server
-  WebSocketService.init();
 
   sails.config.tenant = {
     get: function() {
@@ -23,6 +20,11 @@ module.exports.bootstrap = async function() {
       return user ? user._tenant : null;
     }
   }
+  createNamespace('request-session');
+  // Init WebSocket server
+  WebSocketService.init();
+
+  
 
   if (await Bar.count() > 0) {
     return;

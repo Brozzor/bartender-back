@@ -15,6 +15,7 @@ module.exports = {
       status : {type: 'string', isIn: ['OFFLINE', 'ONLINE', 'USED', 'NO_GLASS' ], defaultsTo: 'OFFLINE'},
 
     },
+    isMultiTenant : false,
 
     beforeCreate: function (values, next) {
       values.token = randomstring.generate(20);
