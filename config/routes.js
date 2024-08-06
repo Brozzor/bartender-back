@@ -19,7 +19,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'POST /api/v1/auth/login' : 'AuthController.login',
+  'POST /api/v1/auth/login' : 'AuthController.loginCustomer',
+  'POST /api/v1/auth/admin/login' : 'AuthController.loginAdmin',
 
   'POST /api/v1/user' : 'UserController.create',
   'GET /api/v1/user/me' : 'UserController.me',

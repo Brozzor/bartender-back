@@ -13,7 +13,9 @@ module.exports = {
       url:  { type: 'string',  required: true, minLength: 3 },
       isSsl: { type: 'boolean',  defaultsTo : false },
       status : {type: 'string', isIn: ['OFFLINE', 'ONLINE', 'USED', 'NO_GLASS' ], defaultsTo: 'OFFLINE'},
-
+      pumps : {type: 'json', defaultsTo: []},
+      eventPassword : {type: 'string', defaultsTo: ''},
+      glassType : {type: 'string', isIn : ['SMALL', 'MEDIUM', 'BIG'], defaultsTo: 'MEDIUM'},
     },
     isMultiTenant : false,
 

@@ -1,5 +1,5 @@
 module.exports = {
-    login: async (req, res) => {
+    loginAdmin: async (req, res) => {
         // inclure recaptcha
         const user = await User.findOne({email: req.body.email})
         let token
@@ -16,6 +16,9 @@ module.exports = {
         return res.json(token)
     },
     loginCustomer: async (req, res) => {
-        
+        console.log(sails.config.tenant)
+        if (!(req.body.name && req.body.password == sails.config.tenant.eventPassword)) return res.sendStatus(401)
+        await LogService.create({message: "Customer " + req.body.name + " logged in", type: "INFO"})
+        return res.sendStatus(200)
     }
 };

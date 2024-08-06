@@ -9,6 +9,8 @@ module.exports = {
             let bar;
             try {
                 bar = await authBar(req.headers.authorization)
+                console.log("websocket")
+                console.log(bar)
                 await closeAllSameBarSocket(bar.id);
                 await Bar.updateOne({id: bar.id}, {status: 'ONLINE'})
             } catch (error) {

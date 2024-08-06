@@ -9,7 +9,7 @@ module.exports = {
 
     attributes: {
       value: {type: 'string'},
-      type: {type: 'string', }
+      type: {type: 'string', isIn: ['INFO', 'ERROR', 'WARNING'], defaultsTo: 'INFO'},
       //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
       //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
       //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
