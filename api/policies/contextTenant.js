@@ -11,7 +11,6 @@ module.exports = async function (req, res, next) {
     ns.run(async () => {
         //const bar = await Bar.findOne({url : req.headers['x-tenant']})
         const bar = await Bar.findOne() // for only one bar
-        console.log(bar)
         if (!bar) return res.sendStatus(400);
         if (!sails.tenant_db_con[bar.id]){
             const db = await MongoClient.connect(process.env.MONGODB_URL)

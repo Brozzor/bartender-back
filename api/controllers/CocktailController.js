@@ -7,11 +7,12 @@
 const WebSocket = require('ws');
 module.exports = {
     create : async function(req, res) {
-        await Cocktail.create(data);
-        return res.sendStatus(200);
+        await Cocktail.create(req.body);
+        return res.sendStatus(201);
     },
     order : async function(req, res) {
-        //console.log(sails.config.sockets.connectedSockets)
+        console.log("order", req.body)
+        console.log(sails.config.sockets.connectedSockets)
         sails.config.sockets.connectedSockets.forEach((ws) => {
             console.log(ws.bar)
             if (ws.readyState === WebSocket.OPEN) {
@@ -26,7 +27,8 @@ module.exports = {
         }
     },
     list : async function(req, res){
-        return await Cocktail.find({});
+        const cocktails = await Cocktail.find({});
+        return res.json(cocktails);
     },
     remove : async function(req, res){
         await Cocktail.destroyOne(req.params.id)
