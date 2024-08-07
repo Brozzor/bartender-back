@@ -16,6 +16,7 @@ module.exports = {
       pumps : {type: 'json', defaultsTo: []},
       eventPassword : {type: 'string', defaultsTo: ''},
       glassType : {type: 'string', isIn : ['SMALL', 'MEDIUM', 'BIG'], defaultsTo: 'MEDIUM'},
+      nbPumps : {type: 'number', defaultsTo: 6},
     },
     isMultiTenant : false,
 

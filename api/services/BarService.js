@@ -8,7 +8,7 @@ module.exports = {
         return new Promise(async (a, r) => {
             if (!sails.tenant_db_con[barId]) {
               const db = await MongoClient.connect(process.env.MONGODB_URL)
-              sails.tenant_db_con[barId] = db.db(process.env.MONGODB_TENANT_DB + barId);
+              sails.tenant_db_con[barId] = db.db(process.env.MONGODB_SLAVE_DB + barId);
             }
             a(eventEmitter);
         });
@@ -38,7 +38,7 @@ module.exports = {
         const bar = await Bar.findOne({id}).orFail();
         await Bar.destroyOne({id});
         const db = await MongoClient.connect('mongodb://127.0.0.1:27017/')
-        await db.db('infinity_shop_' + id).dropDatabase()
+        await db.db('infinity_shop_' + id).dropDatabase() // a revoir
         console.log("Dropped TENANT DATABASE " + id + ' ('+bar.url+')')
         return bar;
     },

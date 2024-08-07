@@ -9,7 +9,7 @@ module.exports = {
 
     attributes: {
       name: {type: 'string'},
-      consumable: { type: 'json', columnType: 'array' },
+      consumables: { type: 'json', columnType: 'array' },
       img: { type: 'string'},
       isInStock: {type: 'boolean'},
       //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗

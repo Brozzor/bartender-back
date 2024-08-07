@@ -25,8 +25,7 @@ module.exports = {
             return res.sendStatus(500);
         }
     },
-    display : async function(req, res){
-        // find with bar id
+    list : async function(req, res){
         return await Cocktail.find({});
     },
     remove : async function(req, res){

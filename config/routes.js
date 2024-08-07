@@ -37,6 +37,19 @@ module.exports.routes = {
   'GET /api/v1/a/file/:id' : 'FileController.get',
 
   'POST /api/v1/cocktail/order' : 'CocktailController.order',
+  'POST /api/v1/cocktail' : 'CocktailController.create',
+  'GET /api/v1/cocktail' : 'CocktailController.list',
+  'DELETE /api/v1/cocktail/:id' : 'CocktailController.remove',
+
+  'GET /api/v1/bar' : 'BarController.get',
+  'PUT /api/v1/bar' : 'BarController.update',
+
+  'GET /api/v1/consumable' : 'ConsumableController.list',
+  'POST /api/v1/consumable' : 'ConsumableController.create',
+  'DELETE /api/v1/consumable/:id' : 'ConsumableController.remove',
+
+  // log
+  'GET /api/v1/log' : 'LogController.list',
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

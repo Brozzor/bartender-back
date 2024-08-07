@@ -17,6 +17,28 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-   '*': 'contextTenant',
+  '*': 'contextTenant',
+
+  'BarController': {
+    'get': ['contextTenant', 'isAdmin'],
+    'update': ['contextTenant', 'isAdmin'],
+  },
+
+  'ConsumableController': {
+    'list': ['contextTenant', 'isAdmin'],
+    'create': ['contextTenant', 'isAdmin'],
+    'remove': ['contextTenant', 'isAdmin'],
+  },
+
+  'LogController': {
+    'list': ['contextTenant', 'isAdmin'],
+  },
+
+  'CocktailController': {
+    'order': ['contextTenant'],
+    'create': ['contextTenant', 'isAdmin'],
+    'list': ['contextTenant'],
+    'remove': ['contextTenant', 'isAdmin'],
+  },
 
 };

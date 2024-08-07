@@ -15,7 +15,7 @@ module.exports = async function (req, res, next) {
         if (!bar) return res.sendStatus(400);
         if (!sails.tenant_db_con[bar.id]){
             const db = await MongoClient.connect(process.env.MONGODB_URL)
-            sails.tenant_db_con[bar.id] = db.db(process.env.MONGODB_ + bar.id);
+            sails.tenant_db_con[bar.id] = db.db(process.env.MONGODB_SLAVE_DB + bar.id);
             console.log("Connected to BAR DATABASE " + bar.id + ' ('+bar.url+')')
         }
         ns.set("user", {tenant : bar.id, _tenant : bar });
