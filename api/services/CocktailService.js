@@ -1,19 +1,17 @@
 module.exports = {
 
     order : async function(data){
-        const selectedCocktail = await Cocktail.findOne({'id': data.id}); // add bar id
-        const pumps = await Configuration.find({
-            key: { 
-                'startsWith': 'pump'
-            }
-        })
-
-        let actionPump = await this.selectedPumps(pumps, selectedCocktail);
-        actionPump = await this.recalculatedPumpsTime(actionPump, data.amount);
-        actionPump = await this.formatArrayToJsonBar(actionPump);
-  
-        const postToBar = await this.requestBar(actionPump);
-
+        // sails.config.sockets.connectedSockets.forEach((ws) => {
+        //     console.log(ws.bar)
+        //     if (ws.readyState === WebSocket.OPEN) {
+        //       ws.send(JSON.stringify({ message: 'Nouveau cocktail créé!' }));
+        //     }
+        //   });
+        const selectedCocktail = await Cocktail.findOne({'id': data.id});
+        let pumps = await this.selectedPumps(data.id);
+        pumps = await this.recalculatedPumpsPercent(pumps, data.alcoolPower);
+        pumps = await this.formatToBar(pumps);
+        console.log(pumps)
         await LogService.create({
             value: "Création du cocktail : " + selectedCocktail.name + " par " + data.name,
             type: "order",
@@ -21,93 +19,58 @@ module.exports = {
     
     },
 
-    postRequest : async function(actionPump){
-        let res;
-        try {
-            res = await sails.axios.post('http://88.126.102.109:49154/makeCocktail', JSON.stringify(actionPump), {
-                    headers: {
-                        'Content-Type': 'application/json'
+    selectedPumps : async function(cocktailId) {
+        const cocktail = await Cocktail.findOne({'id': cocktailId});
+        let pumps = []
+        for (let i in sails.config.tenant.pumps){
+            for (const elem2 of cocktail.consumables){
+                if (sails.config.tenant.pumps[i] === elem2.id){
+                    const consumable = await Consumable.findOne({'id': elem2.id});
+                    let drink = {
+                        name: consumable.name,
+                        percent: parseInt(elem2.percent),
+                        isAlcool: consumable.isAlcool,
+                        pumpId: parseInt(i)+1,
                     }
-                })
-        } catch (error) {
-            res = false;
-        }
-        
-        return res;
-    },
-
-    selectedPumps : async function(pumps, selectedCocktail) {
-        let actionPump = []
-        for await (const elem of pumps){
-            for await (const elem2 of selectedCocktail.consommable){
-                if (elem.value === elem2.id){
-                    const selectedConsommable = await Consommable.findOne({'id': elem2.id});
-                    let drink = {}
-                    drink['name'] = elem.name,
-                    drink['time'] = parseInt(elem2.time),
-                    drink['isAlcool'] = selectedConsommable.isAlcool
-            
-                    actionPump.push(drink)
-                    
+                    pumps.push(drink)
                 }
             }
         }
-        
-        return actionPump
+        return pumps
     },
 
-    recalculatedPumpsTime : async function(actionPump, amount){
-        let alcoolTimeAdded = 0;
-        let noAlcoolTime = 0;
-
-        let nbAlcool = 0;
-        let nbNoAlcool = 0;
-
+    recalculatedPumpsPercent : async function(pumps, alcoolPower){
         let augmentationPercent = 0;
+        if (alcoolPower === '2') augmentationPercent = 40;
+        if (alcoolPower === '3') augmentationPercent = 70;
 
-        switch (parseInt(amount)) {
-            case 2:
-                augmentationPercent = 30
-                break;
-            case 3:
-                augmentationPercent = 50
-                break;
-        }
-
-        for (const elem of actionPump) {
-            if (elem.isAlcool){
-                nbAlcool++;
+        let percentAdded = 0;
+        let nbWithoutAlcoolPercent = 0;
+        for (let pump of pumps) {
+            if (pump.isAlcool){
+                const percentToAdd = (pump.percent * augmentationPercent) / 100;
+                pump.percent += percentToAdd
+                percentAdded += percentToAdd
             }else{
-                nbNoAlcool++;
-                noAlcoolTime+= elem.time
+                nbWithoutAlcoolPercent += pump.percent
             }
         }
 
-        for (let elem of actionPump) {
-            if (elem.isAlcool){
-               let calc = ((augmentationPercent/100)/nbAlcool) * elem.time;
-               elem.time += calc
-               alcoolTimeAdded += calc;
-               
+        for (let pump of pumps) {
+            if (!pump.isAlcool){
+                const percentToRemove = (pump.percent * percentAdded) / nbWithoutAlcoolPercent;
+                pump.percent -= percentToRemove
             }
         }
 
-        for (let elem of actionPump) {
-            if (!elem.isAlcool){
-               let percentElemInDrink = (elem.time * 100 ) / noAlcoolTime;
-               let resElemRemoveInDrink = ((percentElemInDrink/100)/nbNoAlcool) * alcoolTimeAdded;
-               elem.time -= resElemRemoveInDrink
-            }
-        }
-
-        return actionPump
+        return pumps
     },
 
-    formatArrayToJsonBar : async function(data){
+    formatToBar : async function(pumps){
         let res = {};
-        
-        for (const elem of data) {
-            res[elem.name] = elem.time;
+        glassWeight = sails.config.glass[sails.config.tenant.glassType]
+        for (const pump of pumps) {
+            res[pump.pumpId] = pump.percent * glassWeight / 100;
         }
 
         return res;
