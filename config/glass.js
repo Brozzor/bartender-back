@@ -1,5 +1,5 @@
 module.exports.glass = {
-    SMALL: 125,
-    MEDIUM: 250,
-    BIG: 400
+    SMALL: 100,
+    MEDIUM: 180,
+    BIG: 380
 }

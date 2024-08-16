@@ -5,12 +5,10 @@ module.exports = {
         const connectedSockets = [];
       
         wss.on('connection', async (ws, req) => {
-
+            console.log('bar connection')
             let bar;
             try {
                 bar = await authBar(req.headers.authorization)
-                console.log("websocket")
-                console.log(bar)
                 await closeAllSameBarSocket(bar.id);
                 await Bar.updateOne({id: bar.id}, {status: 'ONLINE'})
             } catch (error) {
@@ -59,6 +57,14 @@ module.exports = {
         sails.config.sockets = {
           connectedSockets: connectedSockets,
         };
+    },
+
+    send: async function (message) {
+        for (const ws of sails.config.sockets.connectedSockets) {
+            if (ws.readyState === WebSocket.OPEN && ws.bar === sails.config.tenant.id) {
+                ws.send(JSON.stringify(message));
+            }
+        }
     }
 }
 

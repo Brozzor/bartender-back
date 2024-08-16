@@ -1,16 +1,14 @@
 module.exports = {
 
     order : async function(data){
-        // sails.config.sockets.connectedSockets.forEach((ws) => {
-        //     console.log(ws.bar)
-        //     if (ws.readyState === WebSocket.OPEN) {
-        //       ws.send(JSON.stringify({ message: 'Nouveau cocktail créé!' }));
-        //     }
-        //   });
         const selectedCocktail = await Cocktail.findOne({'id': data.id});
         let pumps = await this.selectedPumps(data.id);
         pumps = await this.recalculatedPumpsPercent(pumps, data.alcoolPower);
         pumps = await this.formatToBar(pumps);
+        await WebSocketService.send({
+            type: "ORDER",
+            pumps
+        });
         console.log(pumps)
         await LogService.create({
             value: "Création du cocktail : " + selectedCocktail.name + " par " + data.name,

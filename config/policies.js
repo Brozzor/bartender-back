@@ -25,7 +25,7 @@ module.exports.policies = {
   },
 
   'ConsumableController': {
-    'list': ['contextTenant', 'isAdmin'],
+    'list': ['contextTenant'],
     'create': ['contextTenant', 'isAdmin'],
     'remove': ['contextTenant', 'isAdmin'],
   },
