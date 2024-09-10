@@ -256,6 +256,8 @@ module.exports = {
   ***************************************************************************/
   sockets: {
 
+    onlyAllowOrigins: []
+
     /***************************************************************************
     *                                                                          *
     * Uncomment the `onlyAllowOrigins` whitelist below to configure which      *
