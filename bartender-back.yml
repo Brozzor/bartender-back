@@ -1,5 +1,5 @@
 apps:
-  - script: NODE_ENV=production node app.js
+  - script: NODE_ENV=production node app.js --port 8201
     name: bartender-back
     restart_delay: 1000
     log_date_format: 'YYYY-MM-DD HH:mm Z'
