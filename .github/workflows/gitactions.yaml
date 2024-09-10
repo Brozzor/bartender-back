@@ -9,9 +9,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    environment:
+      name: production
+
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci
+
+    - name: rsync deployments
+      uses: burnett01/rsync-deployments@7.0.1
+      with:
+        switches: -avzr --delete --exclude='.env'
+        path: ./
+        remote_path: /home/romain/projects/bartender/bartender-back
+        remote_host: ${{ secrets.VPS_HOST }}
+        remote_port: 22
+        remote_user: ${{ secrets.VPS_USERNAME }}
+        remote_key: ${{ secrets.SSH_PRIVATE_KEY  }}
+
+    - name: SSH into server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd /home/romain/projects/bartender/bartender-back
+          pm2 stop bartender-back
+          pm2 start bartender-back.yml
