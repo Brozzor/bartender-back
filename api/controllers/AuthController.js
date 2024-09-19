@@ -18,7 +18,7 @@ module.exports = {
     },
     loginCustomer: async (req, res) => {
         if (!(req.body.name && req.body.password == sails.config.tenant.eventPassword)) return res.sendStatus(401)
-        await LogService.create({message: "Customer " + req.body.name + " logged in", type: "INFO"})
+        await LogService.create({value: ("Customer " + req.body.name + " logged in"), type: "INFO"})
         return res.sendStatus(200)
     }
 };
