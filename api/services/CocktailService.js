@@ -11,8 +11,8 @@ module.exports = {
         });
         console.log(pumps)
         await LogService.create({
-            value: "Création du cocktail : " + selectedCocktail.name + " par " + data.name,
-            type: "order",
+            value: "Cocktail creation : " + selectedCocktail.name + " by " + data.name,
+            type: "ORDER",
         });
     
     },
