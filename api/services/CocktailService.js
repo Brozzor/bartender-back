@@ -75,12 +75,12 @@ module.exports = {
     },
 
     refreshCocktailsStock : async function(){
-        let cocktails = await Cocktail.find();
-        const consumablesInStock = sails.config.tenant.pumps;
+        const cocktails = await Cocktail.find();
+        const bar = await Bar.findOne({id: sails.config.tenant.id});
         for (const cocktail of cocktails){
             let isInStock = true;
             for (const consumable of cocktail.consumables){
-                if (!consumablesInStock.includes(consumable.id)){
+                if (!bar.pumps.includes(consumable.id)){
                     isInStock = false;
                     break;
                 }
