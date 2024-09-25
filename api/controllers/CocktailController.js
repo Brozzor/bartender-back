@@ -7,6 +7,7 @@
 module.exports = {
     create : async function(req, res) {
         await Cocktail.create(req.body);
+        await CocktailService.refreshCocktailsStock()
         return res.sendStatus(201);
     },
     order : async function(req, res) {

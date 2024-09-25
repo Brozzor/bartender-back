@@ -74,4 +74,19 @@ module.exports = {
         return res;
     },
 
+    refreshCocktailsStock : async function(){
+        let cocktails = await Cocktail.find();
+        const consumablesInStock = sails.config.tenant.pumps;
+        for (const cocktail of cocktails){
+            let isInStock = true;
+            for (const consumable of cocktail.consumables){
+                if (!consumablesInStock.includes(consumable.id)){
+                    isInStock = false;
+                    break;
+                }
+            }
+            await Cocktail.updateOne({id: cocktail.id}, {isInStock: isInStock})
+        }
+    }
+
 }

@@ -10,6 +10,7 @@ module.exports = {
     update: async (req, res) => {
         const { name, pumps, eventPassword, glassType} = req.body;
         await Bar.updateOne({ id: sails.config.tenant.id }, { name, pumps, eventPassword, glassType})
+        await CocktailService.refreshCocktailsStock()
         return res.sendStatus(200);
     },
 };
